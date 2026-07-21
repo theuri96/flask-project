@@ -4,5 +4,27 @@
 {% block content %}
 <div>
     <p>This is Stock Page</p>
+    <div>
+        <table id="example" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Stock Id</th>
+                    <th>Product Id</th>
+                    <th>Stock_Quantity</th>
+                    <th>Created_at</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales_data %}
+                <tr>
+                    <td>{{ stock[0] }}</td>
+                    <td>{{ stock[1] }}</td>
+                    <td>{{ stock[2] }}</td>
+                    <td>{{ stock[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

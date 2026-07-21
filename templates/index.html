@@ -4,5 +4,18 @@
 {% block content %}
 <div>
     <p>This is Home Page</p>
+
+    {{ num }}
+    <p>{{ name }}</p>
+    <div>
+        {{ numbers }}
+    </div>
+    
+        {% for i in numbers %}
+            {% if i % 2 == 0 %}
+               <h1> {{ i }} </h1>
+            {% endif %}
+        {% endfor %}
+
 </div>
 {% endblock %}
