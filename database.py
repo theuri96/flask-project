@@ -15,7 +15,7 @@ def get_products():
     products = cur.fetchall() # products in fuction is local
     return products
 
-products = get_products()   # products outside function is global
+#products = get_products()   # products outside function is global
 #print(products)
 
 
@@ -43,12 +43,12 @@ def insert_sales(sale_value):
     cur.execute("insert into sales(pid, quantity)values(%s,%s)", sale_value)
     conn.commit()
 
-sale1 = (2,25)
-sale2 = (3,35)
+#sale1 = (2,25)
+#sale2 = (3,35)
 
-insert_sales(sale1)
-insert_sales(sale2)
-sales = get_sales()
+#insert_sales(sale1)
+#insert_sales(sale2)
+#sales = get_sales()
 #print(sales)
 
 def get_stock():
@@ -60,9 +60,60 @@ def insert_stock(stock_value):
     cur.execute("insert into stock(pid,stock_quantity)values(%s,%s)",stock_value)
     conn.commit()
 
-stock1 = (2,40)
-stock2 = (3,60)
-insert_stock(stock1)
-insert_stock(stock2)
-stock = get_stock()
-print(stock)
+#stock1 = (2,40)
+#stock2 = (3,60)
+#insert_stock(stock1)
+#insert_stock(stock2)
+#stock = get_stock()
+#print(stock)
+
+def sales_per_product():
+    cur.execute("""
+        select products.name as p_name , sum(products.selling_price * sales.quantity) as 
+        total_sales from products join sales on sales.pid = products.id group by p_name;
+    """)
+    sales_product = cur.fetchall()
+    return sales_product
+
+
+# sales_product = sales_per_product()
+# print(sales_product)
+
+
+def sales_per_day():
+    cur.execute("""
+        select date(sales.created_at) as date, sum(products.selling_price * sales.quantity) as 
+        total_sales from sales join products on sales.pid = products.id group by date
+    """)
+    sales_day = cur.fetchall()
+    return sales_day
+
+
+def profit_per_product():
+    cur.execute("""
+        select products.name as p_name , sum((products.selling_price - products.buying_price) * sales.quantity)
+        from sales join products on sales.pid = products.id group by p_name
+    """)
+    profit_product = cur.fetchall()
+    return profit_product
+
+
+def profit_per_day():
+    cur.execute("""
+        select date(sales.created_at) as date , sum((products.selling_price - products.buying_price) * sales.quantity)
+         from sales join products on sales.pid = products.id group by date
+    """)
+    profit_day = cur.fetchall()
+    return profit_day
+
+
+
+
+def check_available_stock(pid):
+    cur.execute("select sum(stock_quantity) from stock where pid = %s",(pid,))
+    total_stock = cur.fetchone()[0] or 0
+
+    cur.execute("select sum(quantity) from sales where pid = %s",(pid,))
+    total_sold = cur.fetchone()[0] or 0
+
+    return total_stock - total_sold

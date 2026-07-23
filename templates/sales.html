@@ -5,6 +5,46 @@
 <div>
     <p>This is Sales Page</p>
     <div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add Sales
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Adding Sales</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/add_sale" method="post">
+                            <div class="mb-3">
+                                <select class="form-select" aria-label="Default select example" name="pid">
+                                    <option selected>Select Product</option>
+                                       {% for product in products_data %}
+                                    <option value="{{ product[0] }}"> {{ product[1] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="exampleInputPassword1" name="quantity">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Add sales</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
         <table id="example" class="table table-striped">
             <thead>
                 <tr>
